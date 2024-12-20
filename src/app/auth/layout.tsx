@@ -1,14 +1,13 @@
-import { createClient } from "@/supabase/server";
-import React from "react";
-import { redirect } from "next/navigation";
 import { ADMIN } from "@/constants/constants";
+import { createClient } from "@/supabase/server";
+import { redirect } from "next/navigation";
+import { ReactNode } from "react";
 
-export default async function AdminLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
-
   const supabase = await createClient();
 
   const { data: authData } = await supabase.auth.getUser();
@@ -25,11 +24,8 @@ export default async function AdminLayout({
       return;
     }
 
-    if (data.type === ADMIN) return redirect("/");
+    if (data.type === ADMIN) return redirect("/admin");
   }
 
-
-  return <div>
-    {children}
-  </div>;
+  return <>{children}</>;
 }
